@@ -240,6 +240,10 @@ const string kFileBufSize = RECORD_FIELD"fileBufSize";
 const string kFastStart = RECORD_FIELD"fastStart";
 //mp4文件是否重头循环读取
 const string kFileRepeat = RECORD_FIELD"fileRepeat";
+//自动录像
+const string kAutoRec = RECORD_FIELD"autoRec";
+//自动录像周期
+const string kAutoRecCycleSecond = RECORD_FIELD"autoRecCycleSecond";
 
 onceToken token([](){
     mINI::Instance()[kAppName] = "record";
@@ -248,7 +252,9 @@ onceToken token([](){
     mINI::Instance()[kFilePath] = "./www";
     mINI::Instance()[kFileBufSize] = 64 * 1024;
     mINI::Instance()[kFastStart] = false;
-    mINI::Instance()[kFileRepeat] = false;
+	mINI::Instance()[kFileRepeat] = false;
+	mINI::Instance()[kAutoRec] = false;
+	mINI::Instance()[kAutoRecCycleSecond] = 300.0;
 },nullptr);
 } //namespace Record
 

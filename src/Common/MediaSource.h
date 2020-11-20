@@ -296,6 +296,7 @@ private:
     string _app;
     string _stream_id;
     std::weak_ptr<MediaSourceEvent> _listener;
+	Timer::Ptr _autoRecTimer;
 };
 
 ///缓存刷新策略类

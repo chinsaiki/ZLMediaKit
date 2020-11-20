@@ -281,6 +281,10 @@ extern const string kFileBufSize;
 extern const string kFastStart;
 //mp4文件是否重头循环读取
 extern const string kFileRepeat;
+//自动录像
+extern const string kAutoRec;
+//自动录像周期
+extern const string kAutoRecCycleSecond;
 } //namespace Record
 
 ////////////HLS相关配置///////////

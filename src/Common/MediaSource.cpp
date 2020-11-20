@@ -397,11 +397,41 @@ void MediaSource::regist() {
         s_media_source_map[_schema][_vhost][_app][_stream_id] = shared_from_this();
     }
     emitEvent(true);
+
+    //
+	GET_CONFIG(bool, autoRec, Record::kAutoRec);
+	GET_CONFIG(double, autoRecCycleSecond, Record::kAutoRecCycleSecond);
+    if (autoRec) {
+        setupRecord(Recorder::type::type_mp4, true, "autoRec/");
+        if (autoRecCycleSecond>0 && !_autoRecTimer) {
+            weak_ptr<MediaSource> weakSelf = shared_from_this();
+			_autoRecTimer = std::make_shared<Timer>(autoRecCycleSecond, [weakSelf] {
+				auto strongSelf = weakSelf.lock();
+				if (!strongSelf) {
+					return false;
+				}
+				strongSelf->setupRecord(Recorder::type::type_mp4, false, "autoRec/");
+				strongSelf->setupRecord(Recorder::type::type_mp4, true, "autoRec/");
+				return true;
+			}, nullptr);
+		}
+    }
+    //
+
 }
 
 //反注册该源
 bool MediaSource::unregist() {
-    bool ret;
+	bool ret;
+
+	//
+	GET_CONFIG(bool, autoRec, Record::kAutoRec);
+	if (autoRec) {
+		setupRecord(Recorder::type::type_mp4, false, "autoRec/");
+        _autoRecTimer = nullptr;
+	}
+    //
+
     {
         //减小互斥锁临界区
         lock_guard<recursive_mutex> lock(s_media_source_mtx);
