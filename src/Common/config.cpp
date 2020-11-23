@@ -29,6 +29,9 @@ bool loadIniConfig(const char *ini_path){
     try{
         mINI::Instance().parseFile(ini);
         NoticeCenter::Instance().emitEvent(Broadcast::kBroadcastReloadConfig);
+        GET_CONFIG(bool, autoRec, Record::kAutoRec);
+	    GET_CONFIG(double, autoRecCycleSecond, Record::kAutoRecCycleSecond);
+        InfoL << "autoRec = " << autoRec << " autoRecCycleSecond=" << autoRecCycleSecond;
         return true;
     }catch (std::exception &ex) {
         InfoL << "dump ini file to:" << ini;
