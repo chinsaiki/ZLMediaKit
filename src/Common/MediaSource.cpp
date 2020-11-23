@@ -401,8 +401,10 @@ void MediaSource::regist() {
     //
 	GET_CONFIG(bool, autoRec, Record::kAutoRec);
 	GET_CONFIG(double, autoRecCycleSecond, Record::kAutoRecCycleSecond);
-    if (autoRec) {
+    if (autoRec && _schema=="hls") {
         setupRecord(Recorder::type::type_mp4, true, "autoRec/");
+        InfoL << "autoRec start for " << _schema << " " << _vhost << " " << _app << " " << _stream_id;
+
         if (autoRecCycleSecond>0 && !_autoRecTimer) {
             weak_ptr<MediaSource> weakSelf = shared_from_this();
 			_autoRecTimer = std::make_shared<Timer>(autoRecCycleSecond, [weakSelf] {
@@ -427,7 +429,7 @@ bool MediaSource::unregist() {
 
 	//
 	GET_CONFIG(bool, autoRec, Record::kAutoRec);
-	if (autoRec) {
+	if (autoRec && _schema=="hls") {
 		setupRecord(Recorder::type::type_mp4, false, "autoRec/");
         _autoRecTimer = nullptr;
 	}
