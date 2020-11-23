@@ -412,6 +412,7 @@ void MediaSource::regist() {
 				}
 				strongSelf->setupRecord(Recorder::type::type_mp4, false, "autoRec/");
 				strongSelf->setupRecord(Recorder::type::type_mp4, true, "autoRec/");
+                InfoL << "autoRec sliced for " << strongSelf->getSchema() << " " << strongSelf->getVhost() << " " << strongSelf->getApp() << " " << strongSelf->getId();
 				return true;
 			}, nullptr);
 		}
